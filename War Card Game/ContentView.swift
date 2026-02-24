@@ -8,6 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State var playerCard: String = "card13"
+    @State var cpuCard: String = "card10"
+    @State var playerScore: Int = 0
+    @State var cpuScore: Int = 0
+    
     var body: some View {
         ZStack
         {
@@ -20,16 +26,16 @@ struct ContentView: View {
                 
                 //Cards
                 HStack (spacing: 50){
-                    Image("card2")
+                    Image(playerCard)
                         .scaledToFit()
-                    Image("card3")
+                    Image(cpuCard)
                         .scaledToFit()
                 }
                 
                 //Button
-                Button (action: {
-                    print("Button tapped")
-                }) {
+                Button  {
+                    dealCards()
+                } label: {
                     Image("button")
                         .scaledToFit()
                 }
@@ -38,23 +44,49 @@ struct ContentView: View {
                 HStack(spacing: 80){
                     
                     VStack {
-                        Text("Player").font(.headline).padding(.bottom)
+                        Text("Player")
+                            .font(.headline)
+                            .padding(.bottom)
                         
-                        Text("0").font(.largeTitle)
+                        Text(String(playerScore))
+                            .font(.largeTitle)
                     }
                     
                     
                     
                     VStack {
-                        Text("CPU").font(.headline).padding(.bottom)
+                        Text("CPU")
+                            .font(.headline)
+                            .padding(.bottom)
                         
-                        Text("0").font(.largeTitle)
+                        Text(String(cpuScore))
+                            .font(.largeTitle)
                     }
                     
                 }.foregroundStyle(.white)
                 
             }
             .padding()
+        }
+    }
+    
+    func dealCards(){
+        //Randomize card values
+        var playerValue = Int.random(in: 2...14)
+        var cpuValue = Int.random(in: 2...14)
+        
+        //Update the card images
+        playerCard = "card" + String(playerValue)
+        cpuCard = "card" + String(cpuValue)
+        
+        //Calculate the score and update the score labels
+        if playerValue > cpuValue {
+            playerScore += 1
+        } else if cpuValue > playerValue {
+            cpuScore += 1
+        } else {
+            playerScore += 0
+            cpuScore += 0
         }
     }
 }
